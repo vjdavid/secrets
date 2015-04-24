@@ -1,5 +1,5 @@
 
-#Ignore database config
+/test
 /config/database.yml
 
 # Ignore bundler config.
