@@ -1,5 +1,5 @@
 class AgentsController < ApplicationController
-  before_action :find_agent, only: [:show, :current_project]
+  before_action :find_agent, only: [:show, :update, :destroy, :current_project]
 
   def index
     @agents = Agent.all
@@ -8,6 +8,29 @@ class AgentsController < ApplicationController
 
   def show
     render json: @agent
+  end
+
+  def create
+    @agent = Agent.create(agent_params)
+
+    if @agent.save
+      render json: @agent
+    else
+      render json: @agent.errors
+    end
+  end
+
+  def update
+   if @agent.update(agent_params)
+     render json: @agent
+   else
+     render json: @agent.errors
+   end
+  end
+
+  def destroy
+    @agent.destroy
+    head :no_content
   end
 
   def current_project
@@ -21,7 +44,6 @@ class AgentsController < ApplicationController
   end
 
   def agent_params
-    params.permit(:name, :email)
+    params.require(:agent).permit(:name, :email)
   end
-
 end
