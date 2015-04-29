@@ -6,17 +6,10 @@ Rails.application.routes.draw do
    end
  end
 
- resources :tasks, except: [:new, :edit] do
-   member do
-     get 'project_id'
-   end
- end
+ resources :tasks, except: [:new, :edit]
+ match 'tasks/:project_id' => 'tasks#index', :via => :get
 
- resources :projects, except: [:new, :edit] do
-   member do
-     get 'agent_id'
-   end
- end
-
+ resources :projects, except: [:new, :edit]
+ match 'projects/:agent_id' => 'projects#index', :via => :get
 
 end
