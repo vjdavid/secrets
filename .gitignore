@@ -1,6 +1,7 @@
 
 /test
 /config/database.yml
+.rspec
 
 # Ignore bundler config.
 /.bundle
