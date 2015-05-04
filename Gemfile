@@ -6,6 +6,7 @@ gem 'pg', '0.18.1'
 
 group :test, :development do
   gem 'pry', '0.10.1'
+  gem 'pry-rails'
   gem 'rspec-rails', '3.2.1'
   gem 'spring', '1.3.5'
   gem 'factory_girl_rails', '4.5.0'
