@@ -9,4 +9,5 @@ group :test, :development do
   gem 'rspec-rails', '3.2.1'
   gem 'spring', '1.3.5'
   gem 'factory_girl_rails', '4.5.0'
+  gem 'shoulda-matchers', '2.8.0'
 end
