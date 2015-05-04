@@ -44,6 +44,6 @@ class AgentsController < ApplicationController
   end
 
   def agent_params
-    params.require(:agent).permit(:name, :email)
+    params.permit(:name, :email)
   end
 end
