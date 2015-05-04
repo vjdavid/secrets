@@ -34,11 +34,12 @@ class AgentsController < ApplicationController
   end
 
   def current_project
-    @agent = @agent.current_project
-    render json: @agent
+    @project = @agent.current_project
+    render json: @project
   end
 
   private
+
   def find_agent
     @agent = Agent.find(params[:id])
   end
