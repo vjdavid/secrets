@@ -23,4 +23,32 @@ RSpec.describe AgentsController, :type => :controller do
     end
   end
 
+  describe "POST #create" do
+    it "create an agent" do
+      expect {
+        post :create, agent: FactoryGirl.attributes_for(:agent)
+        body = JSON.parse(response.body)
+      }.to change(Agent, :count).by(1)
+    end
+  end
+
+  describe "PUT #update" do
+    it "update an agent" do
+      agent = FactoryGirl.create(:agent)
+      old_name = agent.name
+      put :update, { id: agent.id, name: "Holis" }
+      body = JSON.parse(response.body)
+      new_name = body["name"]
+      expect(old_name).not_to eq(new_name)
+    end
+  end
+
+  describe "DELETE #destroy" do
+    it "destroy one agent" do
+      agent = FactoryGirl.create(:agent)
+        delete :destroy, { id: agent.id }
+      expect(response.body).to eq("")
+    end
+  end
+
 end
