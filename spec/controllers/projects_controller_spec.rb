@@ -27,8 +27,7 @@ RSpec.describe ProjectsController, :type => :controller do
   describe "POST #create" do
     it "create one project" do
       expect {
-        post :create, agent: FactoryGirl.attributes_for(:agent)
-        body = JSON.parse(response.body)
+        post :create, FactoryGirl.attributes_for(:project)
       }.to change(Project, :count).by(1)
     end
   end
