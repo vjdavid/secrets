@@ -5,7 +5,8 @@ RSpec.describe TasksController, :type => :controller do
 
   describe "GET #index" do
     it "return all tasks belongs to project" do
-     project = FactoryGirl.create(:project)
+     agent = FactoryGirl.create(:agent)
+     project = FactoryGirl.create(:project, agent_id: agent.id)
      3.times { FactoryGirl.create(:task, project_id: project.id) }
 
      get :index, { project_id: project.id }
@@ -14,7 +15,9 @@ RSpec.describe TasksController, :type => :controller do
     end
 
     it "return all tasks" do
-      3.times { FactoryGirl.create(:task) }
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id )
+      3.times { FactoryGirl.create(:task, project_id: project.id) }
 
       get :index, { id: 1 }
       body = JSON.parse(response.body)
@@ -24,7 +27,9 @@ RSpec.describe TasksController, :type => :controller do
 
   describe "GET #show" do
     it "show one task" do
-      task = FactoryGirl.create(:task)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
+      task = FactoryGirl.create(:task, project_id: project.id)
 
       get :show, {id: task.id }
       body = JSON.parse(response.body)
@@ -34,8 +39,10 @@ RSpec.describe TasksController, :type => :controller do
 
   describe "POST #create" do
     it "create one task" do
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
       expect {
-        post :create, FactoryGirl.attributes_for(:task)
+        post :create, FactoryGirl.attributes_for(:task, project_id: project.id)
         body = JSON.parse(response.body)
       }.to change(Task, :count).by(1)
     end
@@ -43,7 +50,9 @@ RSpec.describe TasksController, :type => :controller do
 
   describe "PUT #update" do
     it "update on task" do
-      task = FactoryGirl.create(:task)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
+      task = FactoryGirl.create(:task, project_id: project.id)
       old_name = task.name
 
       put :update, { id: task.id, name: "sample" }
@@ -55,7 +64,9 @@ RSpec.describe TasksController, :type => :controller do
 
   describe "DELETE #destroy" do
     it "delete one task" do
-      task = FactoryGirl.create(:task)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
+      task = FactoryGirl.create(:task, project_id: project.id)
 
       delete :destroy, { id: task.id }
       expect(response.body).to eq("")
