@@ -5,13 +5,13 @@ Rails.application.routes.draw do
      get 'current_project'
    end
 
-   resources :projects
+   resources :projects, except: [:new, :edit]
  end
 
  resources :tasks, except: [:new, :edit]
 
  resources :projects, except: [:new, :edit] do
-   resources :tasks
+   resources :tasks, except: [:new, :edit]
  end
 
 end
