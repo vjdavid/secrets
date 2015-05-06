@@ -14,7 +14,8 @@ RSpec.describe ProjectsController, :type => :controller do
     end
 
     it "return all projects" do
-      5.times { FactoryGirl.create(:project) }
+      agent = FactoryGirl.create(:agent)
+      5.times { FactoryGirl.create(:project, agent_id: agent.id) }
 
       get :index, { id: 1 }
       body = JSON.parse(response.body)
@@ -24,7 +25,8 @@ RSpec.describe ProjectsController, :type => :controller do
 
   describe "GET #show" do
     it "show one project" do
-      project = FactoryGirl.create(:project)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
 
       get :show, { id: project.id }
       body = JSON.parse(response.body)
@@ -34,15 +36,17 @@ RSpec.describe ProjectsController, :type => :controller do
 
   describe "POST #create" do
     it "create one project" do
+      agent = FactoryGirl.create(:agent)
       expect {
-        post :create, FactoryGirl.attributes_for(:project)
+        post :create, FactoryGirl.attributes_for(:project, agent_id: agent.id)
       }.to change(Project, :count).by(1)
     end
   end
 
   describe "PUT #update" do
     it "update one project" do
-      project = FactoryGirl.create(:project)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
       old_name = project.name
 
       put :update, { id: project.id, name: "holis" }
@@ -54,7 +58,8 @@ RSpec.describe ProjectsController, :type => :controller do
 
   describe "DELETE #destroy" do
     it "delete one project" do
-      project = FactoryGirl.create(:project)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
       delete :destroy, { id: project.id }
       expect(response.body).to eq("")
     end
