@@ -27,7 +27,7 @@ RSpec.describe TasksController, :type => :controller do
   describe "POST #create" do
     it "create one task" do
       expect {
-        post :create, FactoryGirl.attributes_for(:agent)
+        post :create, FactoryGirl.attributes_for(:task)
         body = JSON.parse(response.body)
       }.to change(Task, :count).by(1)
     end
