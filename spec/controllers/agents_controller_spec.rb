@@ -26,7 +26,7 @@ RSpec.describe AgentsController, :type => :controller do
   describe "POST #create" do
     it "create an agent" do
       expect {
-        post :create, agent: FactoryGirl.attributes_for(:agent)
+        post :create, FactoryGirl.attributes_for(:agent)
         body = JSON.parse(response.body)
       }.to change(Agent, :count).by(1)
     end
