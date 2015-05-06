@@ -4,11 +4,14 @@ require 'pry'
 RSpec.describe ProjectsController, :type => :controller do
 
   describe "GET #index" do
-    it "return all projects belongs to task" do
-      agent = FactoryGirl.create(:agent)
-      5.times { FactoryGirl.create(:project, agent_id: agent.id) }
+    it "return all projects belongs to agent" do
+      first_agent = FactoryGirl.create(:agent)
+      5.times { FactoryGirl.create(:project, agent_id: first_agent.id) }
 
-      get :index, { agent_id: agent.id }
+      additional_agent = FactoryGirl.create(:agent)
+      5.times { FactoryGirl.create(:project, agent_id: additional_agent.id) }
+
+      get :index, { agent_id: first_agent.id }
       body = JSON.parse(response.body)
       expect(body.count).to eq(5)
     end
@@ -17,9 +20,18 @@ RSpec.describe ProjectsController, :type => :controller do
       agent = FactoryGirl.create(:agent)
       5.times { FactoryGirl.create(:project, agent_id: agent.id) }
 
-      get :index, { id: 1 }
+      agent = FactoryGirl.create(:agent)
+      5.times { FactoryGirl.create(:project, agent_id: agent.id) }
+
+      agent = FactoryGirl.create(:agent)
+      5.times { FactoryGirl.create(:project, agent_id: agent.id) }
+
+      agent = FactoryGirl.create(:agent)
+      5.times { FactoryGirl.create(:project, agent_id: agent.id) }
+
+      get :index
       body = JSON.parse(response.body)
-      expect(body.count).to eq(5)
+      expect(body.count).to eq(20)
     end
   end
 
@@ -60,8 +72,10 @@ RSpec.describe ProjectsController, :type => :controller do
     it "delete one project" do
       agent = FactoryGirl.create(:agent)
       project = FactoryGirl.create(:project, agent_id: agent.id)
-      delete :destroy, { id: project.id }
-      expect(response.body).to eq("")
+
+      expect {
+        delete :destroy, { id: project.id }
+      }.to change(Project, :count).by(-1)
     end
   end
 
