@@ -12,6 +12,14 @@ RSpec.describe ProjectsController, :type => :controller do
       body = JSON.parse(response.body)
       expect(body.count).to eq(5)
     end
+
+    it "return all projects" do
+      5.times { FactoryGirl.create(:project) }
+
+      get :index, { id: 1 }
+      body = JSON.parse(response.body)
+      expect(body.count).to eq(5)
+    end
   end
 
   describe "GET #show" do
