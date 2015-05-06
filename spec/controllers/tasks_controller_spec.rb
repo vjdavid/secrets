@@ -4,13 +4,21 @@ require 'pry'
 RSpec.describe TasksController, :type => :controller do
 
   describe "GET #index" do
-    it "return all tasks" do
+    it "return all tasks belongs to project" do
      project = FactoryGirl.create(:project)
      3.times { FactoryGirl.create(:task, project_id: project.id) }
 
      get :index, { project_id: project.id }
      body = JSON.parse(response.body)
      expect(body.count).to eq(3)
+    end
+
+    it "return all tasks" do
+      3.times { FactoryGirl.create(:task) }
+
+      get :index, { id: 1 }
+      body = JSON.parse(response.body)
+      expect(body.count).to eq(3)
     end
   end
 
