@@ -5,23 +5,32 @@ RSpec.describe TasksController, :type => :controller do
 
   describe "GET #index" do
     it "return all tasks belongs to project" do
-     agent = FactoryGirl.create(:agent)
-     project = FactoryGirl.create(:project, agent_id: agent.id)
-     3.times { FactoryGirl.create(:task, project_id: project.id) }
+     first_agent = FactoryGirl.create(:agent)
+     first_project = FactoryGirl.create(:project, agent_id: first_agent.id)
+     3.times { FactoryGirl.create(:task, project_id: first_project.id) }
 
-     get :index, { project_id: project.id }
+     extra_agent = FactoryGirl.create(:agent)
+     extra_project = FactoryGirl.create(:project, agent_id: extra_agent.id)
+     3.times { FactoryGirl.create(:task, project_id: extra_project.id) }
+
+     get :index, { project_id: first_project.id }
      body = JSON.parse(response.body)
      expect(body.count).to eq(3)
     end
 
     it "return all tasks" do
-      agent = FactoryGirl.create(:agent)
-      project = FactoryGirl.create(:project, agent_id: agent.id )
+      project = FactoryGirl.create(:agent)
       3.times { FactoryGirl.create(:task, project_id: project.id) }
 
-      get :index, { id: 1 }
+      project = FactoryGirl.create(:agent)
+      3.times { FactoryGirl.create(:task, project_id: project.id) }
+
+      project = FactoryGirl.create(:agent)
+      3.times { FactoryGirl.create(:task, project_id: project.id) }
+
+      get :index
       body = JSON.parse(response.body)
-      expect(body.count).to eq(3)
+      expect(body.count).to eq(9)
     end
   end
 
@@ -68,8 +77,9 @@ RSpec.describe TasksController, :type => :controller do
       project = FactoryGirl.create(:project, agent_id: agent.id)
       task = FactoryGirl.create(:task, project_id: project.id)
 
+      expect {
       delete :destroy, { id: task.id }
-      expect(response.body).to eq("")
+      }.to change(Task, :count).by(-1)
     end
   end
 
