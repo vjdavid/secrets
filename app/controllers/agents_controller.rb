@@ -40,11 +40,17 @@ class AgentsController < ApplicationController
 
   private
 
+  def restrict_access
+    agent = Agent.find(params[:token])
+    head :no_content unless agent
+  end
+
   def find_agent
     @agent = Agent.find(params[:id])
   end
 
   def agent_params
-    params.permit(:name, :email)
+    params.permit(:name, :email, :password)
   end
+
 end
