@@ -14,4 +14,8 @@ Rails.application.routes.draw do
    resources :tasks, except: [:new, :edit]
  end
 
+ post 'register', to: 'agents#create'
+ post 'login', to: 'agents#login'
+ get 'logout', to: 'agents#logout'
+
 end
