@@ -38,6 +38,18 @@ class AgentsController < ApplicationController
     render json: @project
   end
 
+  def login
+    unless @agent = Agent.find_by(email: params[:email])
+      return json: { message: "Record not found with this email" }
+    end
+
+    if @agent.authenticate(params[:password])
+      render json: { token: @agent.token }
+    else
+      render json: { message: "Password does match with this agent" }
+    end
+  end
+
   private
 
   def restrict_access
@@ -50,7 +62,7 @@ class AgentsController < ApplicationController
   end
 
   def agent_params
-    params.permit(:name, :email, :password)
+    params.permit(:name, :email, :password, :password_confirmation)
   end
 
 end
