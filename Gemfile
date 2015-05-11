@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.1'
 gem 'rails-api', '0.4.0'
 gem 'pg', '0.18.1'
+gem 'bcrypt', '3.1.10'
 
 group :test, :development do
   gem 'pry', '0.10.1'
