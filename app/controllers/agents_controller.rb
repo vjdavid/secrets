@@ -1,4 +1,5 @@
 class AgentsController < ApplicationController
+  before_action :deny_access, except: [:register]
   before_action :find_agent, only: [:show, :update, :destroy, :current_project]
 
   def index
@@ -14,7 +15,7 @@ class AgentsController < ApplicationController
     @agent = Agent.create(agent_params)
 
     if @agent.save
-      render json: @agent
+      render json: @agent.token
     else
       render json: @agent.errors
     end
@@ -40,22 +41,17 @@ class AgentsController < ApplicationController
 
   def login
     unless @agent = Agent.find_by(email: params[:email])
-      return json: { message: "Record not found with this email" }
+      render json: "Not records find with this email"
     end
 
     if @agent.authenticate(params[:password])
       render json: { token: @agent.token }
     else
-      render json: { message: "Password does match with this agent" }
+      render json: { message: "This password does not matches with user" }
     end
   end
 
   private
-
-  def restrict_access
-    agent = Agent.find(params[:token])
-    head :no_content unless agent
-  end
 
   def find_agent
     @agent = Agent.find(params[:id])
