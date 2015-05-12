@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action :deny_access
   before_action :find_project, only: [:show, :update, :destroy]
 
   def index

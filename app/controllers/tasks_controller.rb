@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_action :deny_access
   before_action :find_task, only: [:show, :update, :destroy]
 
   def index
