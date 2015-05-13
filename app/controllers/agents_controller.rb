@@ -14,7 +14,7 @@ class AgentsController < ApplicationController
     @agent = Agent.create(agent_params)
 
     if @agent.save
-      render json: @agent.token
+      render json: @agent
     else
       render json: @agent.errors
     end
@@ -36,18 +36,6 @@ class AgentsController < ApplicationController
   def current_project
     @project = @agent.current_project
     render json: @project
-  end
-
-  def login
-    unless @agent = Agent.find_by(email: params[:email])
-      render json: "Not records find with this email"
-    end
-
-    if @agent.authenticate(params[:password])
-      render json: { token: @agent.token }
-    else
-      render json: { message: "This password does not matches with user" }
-    end
   end
 
   private
