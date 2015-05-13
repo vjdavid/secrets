@@ -1,21 +1,21 @@
 Rails.application.routes.draw do
 
- resources :agents, except: [:new, :edit] do
+ post 'register', to: 'authentication#register'
+ post 'login', to: 'authentication#login'
+ post 'logout', to: 'authentication#logout'
+
+ resources :agents do
    member do
      get 'current_project'
    end
 
-   resources :projects, except: [:new, :edit]
+   resources :projects
  end
 
- resources :tasks, except: [:new, :edit]
+ resources :tasks
 
- resources :projects, except: [:new, :edit] do
-   resources :tasks, except: [:new, :edit]
+ resources :projects do
+   resources :tasks
  end
-
- post 'register', to: 'agents#create'
- post 'login', to: 'agents#login'
- get 'logout', to: 'agents#logout'
 
 end

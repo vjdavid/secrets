@@ -1,11 +1,24 @@
 class ApplicationController < ActionController::API
-  include ActionController::HttpAuthentication::Token::ControllerMethods
+  before_action :authenticate
 
-  private
-  def deny_access
-    authenticate_or_request_with_http_token do |token, options|
-      Agent.find_by(token: token)
-    end
+  rescue_from StandardError do |exception|
+    render json: { message: "Internal Server Error"}
   end
 
-end
+  def authenticate
+    unless request.env.key? "HTTP_AUTHORIZATION"
+      return render json: { message: "HTTP_AUTHORIZATION header not found" }
+    end
+
+    unless token_authorization = /Token token="(\w{32}+)"/.match(request.env["HTTP_AUTHORIZATION"])
+      return render json: { message: "Incompatible HTTP_AUTHORIZATION header" }
+    end
+
+    unless @current_agent = Agent.find_by(token: token_authorization[1])
+      return render json: { message: "No agent matching with this token" }
+    end
+
+    @current_agent
+  end
+
+ end
