@@ -1,5 +1,4 @@
 class AgentsController < ApplicationController
-  before_action :deny_access, except: [:register]
   before_action :find_agent, only: [:show, :update, :destroy, :current_project]
 
   def index
