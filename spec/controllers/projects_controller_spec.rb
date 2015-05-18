@@ -5,10 +5,10 @@ RSpec.describe ProjectsController, :type => :controller do
 
   describe "GET #index" do
     it "return all projects belongs to agent" do
-      first_agent = FactoryGirl.create(:agent)
+      first_agent = FactoryGirl.create(:agent, password: "holis")
       5.times { FactoryGirl.create(:project, agent_id: first_agent.id) }
 
-      additional_agent = FactoryGirl.create(:agent)
+      additional_agent = FactoryGirl.create(:agent, password: "crayolis")
       5.times { FactoryGirl.create(:project, agent_id: additional_agent.id) }
 
       get :index, { agent_id: first_agent.id }

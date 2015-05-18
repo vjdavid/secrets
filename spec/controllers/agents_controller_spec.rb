@@ -3,11 +3,13 @@ require 'pry'
 
 RSpec.describe AgentsController, :type => :controller do
 
+  let( :agent ) { FactoryGirl.create( :agent, password: "trolis" ) }
+
   describe "GET #index" do
     it "display all agents" do
-      5.times { FactoryGirl.create(:agent) }
+      holis = 5.times { agent }
 
-      get :index, { :id => 1 }
+      get :index
       body = JSON.parse(response.body)
       expect(body.count).to eq(5)
     end
@@ -15,9 +17,9 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "GET #show" do
     it "display one agent" do
-      agent = FactoryGirl.create(:agent)
+      agent
 
-      get :show, { :id => agent.id }
+      get :show, { id: agent.id }
       body = JSON.parse(response.body)
       expect(agent.id).to eq(agent.id)
     end
@@ -34,7 +36,7 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "PUT #update" do
     it "update an agent" do
-      agent = FactoryGirl.create(:agent)
+      agent
       old_name = agent.name
       put :update, { id: agent.id, name: "Holis" }
       body = JSON.parse(response.body)
@@ -45,7 +47,7 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "DELETE #destroy" do
     it "destroy one agent" do
-      agent = FactoryGirl.create(:agent)
+      agent
         delete :destroy, { id: agent.id }
       expect(response.body).to eq("")
     end
