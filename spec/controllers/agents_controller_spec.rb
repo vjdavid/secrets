@@ -4,10 +4,11 @@ require 'pry'
 RSpec.describe AgentsController, :type => :controller do
 
   let( :agent ) { FactoryGirl.create( :agent, password: "trolis" ) }
+  let( :http_auth ) { request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\"" }
 
   describe "GET #index" do
     it "display all agents" do
-      holis = 5.times { agent }
+      5.times { agent }
 
       get :index
       body = JSON.parse(response.body)
@@ -19,7 +20,7 @@ RSpec.describe AgentsController, :type => :controller do
     it "display one agent" do
       agent
 
-      get :show, { id: agent.id }
+      get :show, http_auth, { id: agent.id }
       body = JSON.parse(response.body)
       expect(agent.id).to eq(agent.id)
     end
@@ -27,6 +28,7 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "POST #create" do
     it "create an agent" do
+      http_auth
       expect {
         post :create, FactoryGirl.attributes_for(:agent)
         body = JSON.parse(response.body)
