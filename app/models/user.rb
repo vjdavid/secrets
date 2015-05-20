@@ -1,4 +1,4 @@
-class Agent < ActiveRecord::Base
+class User < ActiveRecord::Base
   has_secure_password validations: false
 
   before_validation :generate_token,                       on: :create

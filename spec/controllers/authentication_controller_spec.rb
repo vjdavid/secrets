@@ -3,30 +3,30 @@ require 'rails_helper'
 RSpec.describe AuthenticationController, :type => :controller do
 
   describe "POST #register" do
-    it "join one agent" do
-      agent = FactoryGirl.create(:agent, password: "holis")
+    it "join one user" do
+      user = FactoryGirl.create(:user, password: "holis")
       expect {
-        post :register, FactoryGirl.attributes_for(:agent, password: "holis")
+        post :register, FactoryGirl.attributes_for(:user, password: "holis")
         body = JSON.parse(response.body)
-      }.to change(Agent, :count).by(1)
+      }.to change(User, :count).by(1)
     end
   end
 
   describe "POST #login" do
-    it "login one agent" do
-      agent = FactoryGirl.create(:agent, password: "nolis")
-      agent_extra = FactoryGirl.create(:agent, email: "holis@trolis.com", password: "trolis")
+    it "login one user" do
+      user = FactoryGirl.create(:user, password: "nolis")
+      user_extra = FactoryGirl.create(:user, email: "holis@trolis.com", password: "trolis")
 
-      post :login, { email: agent.email, password: agent.password }
+      post :login, { email: user.email, password: user.password }
       body = JSON.parse(response.body)
-      expect(agent).not_to eq(agent_extra)
+      expect(user).not_to eq(user_extra)
     end
   end
 
   describe "POST #logout" do
-    it "signout one agent" do
-      agent = FactoryGirl.create(:agent, password: "holis")
-      old_token = agent.token
+    it "signout one user" do
+      user = FactoryGirl.create(:user, password: "holis")
+      old_token = user.token
       new_token = SecureRandom.hex
 
       post :logout, { id: 1, token: new_token }

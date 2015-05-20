@@ -2,8 +2,8 @@ class ProjectsController < ApplicationController
   before_action :find_project, only: [:show, :update, :destroy]
 
   def index
-    if params[:agent_id]
-      @projects = Project.where(agent_id: params[:agent_id])
+    if params[:user_id]
+      @projects = Project.where(user_id: params[:user_id])
       render json: @projects
     else
       @projects = Project.all
@@ -44,6 +44,6 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.permit(:name, :description, :agent_id)
+    params.permit(:name, :description, :user_id)
   end
 end

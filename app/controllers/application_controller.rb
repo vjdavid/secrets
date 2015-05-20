@@ -14,11 +14,11 @@ class ApplicationController < ActionController::API
       return render json: { message: "Incompatible HTTP_AUTHORIZATION header" }
     end
 
-    unless @current_agent = Agent.find_by(token: token_authorization[1])
-      return render json: { message: "No agent matching with this token" }
+    unless @current_user = User.find_by(token: token_authorization[1])
+      return render json: { message: "No user matching with this token" }
     end
 
-    @current_agent
+    @current_user
   end
 
  end

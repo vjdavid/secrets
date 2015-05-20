@@ -4,7 +4,7 @@ Rails.application.routes.draw do
  post 'login', to: 'authentication#login'
  post 'logout', to: 'authentication#logout'
 
- resources :agents do
+ resources :users do
    member do
      get 'current_project'
    end
