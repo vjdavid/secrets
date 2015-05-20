@@ -3,7 +3,6 @@ require 'pry'
 
 RSpec.describe ProjectsController, :type => :controller do
 
-
   describe "GET #index" do
     it "return all projects belongs to agent" do
 
