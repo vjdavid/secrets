@@ -11,11 +11,11 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "GET #index" do
     it "display all agents" do
-      5.times { FactoryGirl.create(:agent, password: "trolis") }
+      5.times { FactoryGirl.create(:agent) }
 
       get :index
       body = JSON.parse(response.body)
-      expect(body.count).to eq(5)
+      expect(body.count).to eq(6)
     end
   end
 
