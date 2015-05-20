@@ -1,6 +1,12 @@
 class User < ActiveRecord::Base
   has_secure_password validations: false
 
+  enum role: {
+    :DIRECTOR => 0,
+    :SECRET_AGENT => 1,
+    :ANALIST => 2,
+  }
+
   before_validation :generate_token,                       on: :create
 
   has_many :projects
