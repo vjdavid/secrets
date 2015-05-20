@@ -4,11 +4,14 @@ require 'pry'
 RSpec.describe AgentsController, :type => :controller do
 
   let( :agent ) { FactoryGirl.create( :agent, password: "trolis" ) }
-  let( :http_auth ) { request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\"" }
+
+  before :each do
+    request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\""
+  end
 
   describe "GET #index" do
     it "display all agents" do
-      5.times { agent }
+      5.times { FactoryGirl.create(:agent, password: "trolis") }
 
       get :index
       body = JSON.parse(response.body)
@@ -18,9 +21,8 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "GET #show" do
     it "display one agent" do
-      agent
 
-      get :show, http_auth, { id: agent.id }
+      get :show, { id: agent.id }
       body = JSON.parse(response.body)
       expect(agent.id).to eq(agent.id)
     end
@@ -28,7 +30,6 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "POST #create" do
     it "create an agent" do
-      http_auth
       expect {
         post :create, FactoryGirl.attributes_for(:agent)
         body = JSON.parse(response.body)
@@ -38,7 +39,6 @@ RSpec.describe AgentsController, :type => :controller do
 
   describe "PUT #update" do
     it "update an agent" do
-      agent
       old_name = agent.name
       put :update, { id: agent.id, name: "Holis" }
       body = JSON.parse(response.body)
@@ -48,9 +48,8 @@ RSpec.describe AgentsController, :type => :controller do
   end
 
   describe "DELETE #destroy" do
-    it "destroy one agent" do
-      agent
-        delete :destroy, { id: agent.id }
+      it "destroy one agent" do
+      delete :destroy, { id: agent.id }
       expect(response.body).to eq("")
     end
   end
