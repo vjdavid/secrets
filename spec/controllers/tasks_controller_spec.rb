@@ -13,20 +13,27 @@ RSpec.describe TasksController, :type => :controller do
      extra_project = FactoryGirl.create(:project, agent_id: extra_agent.id)
      3.times { FactoryGirl.create(:task, project_id: extra_project.id) }
 
+     request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ first_agent.token }\""
+
      get :index, { project_id: first_project.id }
      body = JSON.parse(response.body)
      expect(body.count).to eq(3)
     end
 
     it "return all tasks" do
-      project = FactoryGirl.create(:agent)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
       3.times { FactoryGirl.create(:task, project_id: project.id) }
 
-      project = FactoryGirl.create(:agent)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
       3.times { FactoryGirl.create(:task, project_id: project.id) }
 
-      project = FactoryGirl.create(:agent)
+      agent = FactoryGirl.create(:agent)
+      project = FactoryGirl.create(:project, agent_id: agent.id)
       3.times { FactoryGirl.create(:task, project_id: project.id) }
+
+      request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\""
 
       get :index
       body = JSON.parse(response.body)
@@ -40,6 +47,8 @@ RSpec.describe TasksController, :type => :controller do
       project = FactoryGirl.create(:project, agent_id: agent.id)
       task = FactoryGirl.create(:task, project_id: project.id)
 
+      request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\""
+
       get :show, {id: task.id }
       body = JSON.parse(response.body)
       expect(body["id"]).to eq(task.id)
@@ -50,6 +59,9 @@ RSpec.describe TasksController, :type => :controller do
     it "create one task" do
       agent = FactoryGirl.create(:agent)
       project = FactoryGirl.create(:project, agent_id: agent.id)
+
+      request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\""
+
       expect {
         post :create, FactoryGirl.attributes_for(:task, project_id: project.id)
         body = JSON.parse(response.body)
@@ -64,6 +76,8 @@ RSpec.describe TasksController, :type => :controller do
       task = FactoryGirl.create(:task, project_id: project.id)
       old_name = task.name
 
+      request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\""
+
       put :update, { id: task.id, name: "sample" }
       body = JSON.parse(response.body)
       new_name = body["name"]
@@ -76,6 +90,8 @@ RSpec.describe TasksController, :type => :controller do
       agent = FactoryGirl.create(:agent)
       project = FactoryGirl.create(:project, agent_id: agent.id)
       task = FactoryGirl.create(:task, project_id: project.id)
+
+      request.env['HTTP_AUTHORIZATION'] = "Token token=\"#{ agent.token }\""
 
       expect {
       delete :destroy, { id: task.id }
