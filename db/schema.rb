@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20150520202827) do
     t.datetime "updated_at",         null: false
     t.string   "password_digest"
     t.string   "token"
-    t.string   "role"
+    t.integer  "role"
   end
 
 end
