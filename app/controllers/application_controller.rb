@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  include ActionController::Serialization
+
   before_action :authenticate
 
   rescue_from StandardError do |exception|
