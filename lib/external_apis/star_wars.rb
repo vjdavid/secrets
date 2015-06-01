@@ -24,15 +24,20 @@ module ExternalAPIS
       time = Time.now.to_i
       md5_digest = Digest::MD5.hexdigest("#{time}#{PRIVATE_KEY}#{PUBLIC_KEY}")
 
-      $i = 0
-      $count = 2
+      i = 0
+      count = 1
+      characters = []
 
-      until $i > $count do
-        request = self.class.get("/v1/public/characters?limit=100&offset=#{$i}&ts=#{time}&apikey=#{PUBLIC_KEY}&hash=#{md5_digest}")
-        characters = Array.new(request)
-        $i +=1;
-        puts characters
-      end
+    until i > count do
+      request = self.class.get("/v1/public/characters?limit=5&offset=#{i}&ts=#{time}&apikey=#{PUBLIC_KEY}&hash=#{md5_digest}")
+      characters << request
+      i +=1;
+    end
+
+    characters
+
+    binding.pry
+    characters[0..1]['data']['results'].map { |name| name['name'] }
 
     end
 
